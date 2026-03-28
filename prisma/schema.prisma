@@ -1,0 +1,81 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model School {
+  id                  String       @id @default(uuid())
+  name                String       @unique
+  email               String?      @unique
+  city                String
+  status              SchoolStatus @default(ACTIVE)
+  onboardingCompleted Boolean      @default(false)
+  createdAt           DateTime     @default(now())
+  classes             Class[]
+  students            Student[]
+  users               User[]
+}
+
+model User {
+  id            String         @id @default(uuid())
+  name          String
+  username      String         @unique
+  email         String?        @unique
+  phone         String?        @unique
+  password      String
+  role          UserRole
+  isActive      Boolean        @default(true)
+  createdAt     DateTime       @default(now())
+  schoolId      String?
+  refreshTokens RefreshToken[]
+  school        School?        @relation(fields: [schoolId], references: [id])
+}
+
+model RefreshToken {
+  id        String   @id @default(uuid())
+  token     String   @unique
+  userId    String
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id])
+}
+
+model Class {
+  id        String    @id @default(uuid())
+  name      String
+  createdAt DateTime  @default(now())
+  schoolId  String
+  school    School    @relation(fields: [schoolId], references: [id])
+  students  Student[]
+}
+
+model Student {
+  id        String   @id @default(uuid())
+  matricule String   @unique
+  firstname String
+  lastname  String
+  phone     String?
+  email     String?
+  average   Float?
+  createdAt DateTime @default(now())
+  schoolId  String
+  classId   String?
+  class     Class?   @relation(fields: [classId], references: [id])
+  school    School   @relation(fields: [schoolId], references: [id])
+}
+
+enum UserRole {
+  SUPER_ADMIN
+  ADMIN
+  TEACHER
+  DIRECTOR
+}
+
+enum SchoolStatus {
+  ACTIVE
+  SUSPENDED
+}
