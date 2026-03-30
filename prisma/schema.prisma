@@ -7,6 +7,18 @@ datasource db {
   provider = "postgresql"
 }
 
+enum UserRole {
+  SUPER_ADMIN
+  ADMIN
+  TEACHER
+  DIRECTOR
+}
+
+enum SchoolStatus {
+  ACTIVE
+  SUSPENDED
+}
+
 model School {
   id                  String       @id @default(uuid())
   name                String       @unique
@@ -14,7 +26,8 @@ model School {
   city                String
   status              SchoolStatus @default(ACTIVE)
   onboardingCompleted Boolean      @default(false)
-  createdAt           DateTime     @default(now())
+  createdAt           DateTime     @db.Timestamptz(3)
+  updatedAt           DateTime     @db.Timestamptz(3)
   classes             Class[]
   students            Student[]
   users               User[]
@@ -22,26 +35,59 @@ model School {
 
 model User {
   id            String         @id @default(uuid())
+  image         String?
   name          String
-  username      String         @unique
+  username      String?
   email         String?        @unique
   phone         String?        @unique
-  password      String
-  role          UserRole
+  role          UserRole       @default(ADMIN)
+  emailVerified Boolean        @default(false)
   isActive      Boolean        @default(true)
-  createdAt     DateTime       @default(now())
   schoolId      String?
-  refreshTokens RefreshToken[]
+  birthdate     DateTime?
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
   school        School?        @relation(fields: [schoolId], references: [id])
+  sessions  Session[]
+  accounts  Account[]
 }
 
-model RefreshToken {
-  id        String   @id @default(uuid())
-  token     String   @unique
-  userId    String
-  expiresAt DateTime
-  createdAt DateTime @default(now())
-  user      User     @relation(fields: [userId], references: [id])
+model Session {
+	id        String @id
+	user      User @relation(fields: [userId], references: [id])
+	userId    String
+	token     String @unique
+	expiresAt DateTime @db.Timestamptz(3)
+	ipAddress String?
+	userAgent String?
+	createdAt DateTime @db.Timestamptz(3)
+	updatedAt DateTime @db.Timestamptz(3)
+}
+
+model Account {
+	id            String @id
+	user          User    @relation(fields: [userId], references: [id])
+	userId        String
+	accountId     String
+	providerId    String
+	accessToken   String?
+	refreshToken  String?
+	accessTokenExpiresAt DateTime? @db.Timestamptz(3)
+	refreshTokenExpiresAt DateTime? @db.Timestamptz(3)
+	scope         String?
+	idToken       String?
+	password      String?
+	createdAt     DateTime @db.Timestamptz(3)
+	updatedAt     DateTime @db.Timestamptz(3)
+}
+
+model Verification {
+	id          String @id
+	identifier  String
+	value       String
+	expiresAt   DateTime @db.Timestamptz(3)
+	createdAt   DateTime @db.Timestamptz(3)
+	updatedAt   DateTime @db.Timestamptz(3)
 }
 
 model Class {
@@ -68,14 +114,4 @@ model Student {
   school    School   @relation(fields: [schoolId], references: [id])
 }
 
-enum UserRole {
-  SUPER_ADMIN
-  ADMIN
-  TEACHER
-  DIRECTOR
-}
 
-enum SchoolStatus {
-  ACTIVE
-  SUSPENDED
-}
