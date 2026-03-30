@@ -4,8 +4,8 @@ import { prisma } from "@/lib/prisma"; // ton instance prisma standalone
 import { auth } from "@/lib/auth/auth";
 import { headers } from "next/headers";
 
-export async function loginAction(identifier: string, password: string) {
-  // Résolution : email ou username ?
+export async function signInAction(identifier: string, password: string) {
+  // Résolution : email ou phone ?
   const isEmail = identifier.includes("@");
 
   let email: string | null = null;
@@ -13,7 +13,7 @@ export async function loginAction(identifier: string, password: string) {
   if (isEmail) {
     email = identifier;
   } else {
-    // Cherche l'email via le username
+    // Cherche l'email via le phone
     const user = await prisma.user.findUnique({
       where: { phone: identifier },
       select: { email: true },

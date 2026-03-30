@@ -1,6 +1,9 @@
+"use client";
+
 import {
   Field,
   FieldDescription,
+  FieldError,
   FieldGroup,
   FieldLabel,
   FieldLegend,
@@ -10,10 +13,17 @@ import {
 import { Input } from "@/components/ui/input";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import { useSignIn } from "@/hooks/useAuth";
+import { Spinner } from "../ui/spinner";
 
 const SignInComponent = () => {
+  const { form, onSubmit, globalError } = useSignIn();
+
   return (
-    <form action="" className={"max-w-xs mx-auto relative"}>
+    <form
+      onSubmit={form.handleSubmit(onSubmit)}
+      className={"max-w-xs mx-auto relative"}
+    >
       <FieldGroup>
         <FieldSet>
           <FieldLegend>Connectez-vous</FieldLegend>
@@ -27,8 +37,14 @@ const SignInComponent = () => {
                 id={"identifier"}
                 type={"text"}
                 placeholder={"Email ou numéro de téléphone"}
+                {...form.register("identifier")}
               />
             </Field>
+            {form.formState.errors.identifier && (
+              <FieldError>
+                {form.formState.errors.identifier.message}
+              </FieldError>
+            )}
             <Field>
               <div className={"flex justify-between"}>
                 <FieldLabel htmlFor={"password"}>Mot de passe</FieldLabel>
@@ -43,17 +59,30 @@ const SignInComponent = () => {
                 id={"password"}
                 type={"password"}
                 placeholder={"Mot de passe"}
+                {...form.register("password")}
               />
+              {form.formState.errors.password && (
+                <FieldError>
+                  {form.formState.errors.password.message}
+                </FieldError>
+              )}
             </Field>
           </FieldGroup>
         </FieldSet>
         <FieldSeparator />
-        <Field orientation="horizontal">
-          <Button type="submit">Se connecter</Button>
-          <Button className={"underline"} variant="link" type="button">
-            Retour
-          </Button>
-        </Field>
+        <FieldGroup>
+          {globalError && <FieldError>{globalError}</FieldError>}
+          {!form.formState.isSubmitting ? (
+            <Field orientation="horizontal">
+              <Button type="submit">Se connecter</Button>
+              <Button className={"underline"} variant="link" type="button">
+                Retour
+              </Button>
+            </Field>
+          ) : (
+            <Spinner />
+          )}
+        </FieldGroup>
         <Link
           href={"/sign-up"}
           className={

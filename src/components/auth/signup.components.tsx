@@ -23,7 +23,7 @@ import { useSignUp } from "@/hooks/useAuth";
 import { Spinner } from "@/components/ui/spinner";
 
 const SignupComponent = () => {
-  const { form, onSubmit, globalError, isSubmitting } = useSignUp();
+  const { form, onSubmit, globalError } = useSignUp();
   const [hide, setHide] = React.useState(false);
   return (
     <form
@@ -128,12 +128,8 @@ const SignupComponent = () => {
         </FieldSet>
         <FieldSeparator />
         <FieldGroup>
-          {(globalError || form.formState.errors.root?.message) && (
-            <FieldError>
-              {globalError || form.formState.errors.root?.message}
-            </FieldError>
-          )}
-          {!isSubmitting ? (
+          {globalError && <FieldError>{globalError}</FieldError>}
+          {!form.formState.isSubmitting ? (
             <Field orientation="horizontal">
               <Button type="submit">S'inscrire</Button>
               <Button className={"underline"} variant="link" type="button">

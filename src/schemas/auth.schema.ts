@@ -2,6 +2,10 @@ import { z } from "zod";
 
 const emailSchema = z.string();
 const usernameSchema = z.string();
+const phoneSchema = z
+  .string()
+  .min(1, { message: "Numéro de téléphone invalide" })
+  .max(9, { message: "Numéro de téléphone invalide" });
 const passwordSchema = z
   .string()
   .min(8, { message: "Le mot de passe doit contenir au moins 8 caractères" })
@@ -11,16 +15,15 @@ const identifierSchema = z
   .string()
   .min(1, { message: "Champ requis" })
   .pipe(
-    z.union([emailSchema.email({ message: "Email invalide" }), usernameSchema]),
+    z.union([emailSchema.email({ message: "Email invalide" }), phoneSchema]),
   );
 
 export const signUpSchema = z.object({
   firstname: z.string().min(1, { message: "Nom requis" }),
   lastname: z.string().min(1, { message: "Prénom requis" }),
-  phone: z
-    .string()
-    .min(1, { message: "Numéro de téléphone invalide" })
-    .max(9, { message: "Numéro de téléphone invalide" }),
+  phone: phoneSchema.startsWith("6", {
+    message: "Le numéro doit commencer par 6",
+  }),
   email: emailSchema
     .min(1, { message: "Email requis" })
     .email({ message: "Email invalide" }),
