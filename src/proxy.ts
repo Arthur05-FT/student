@@ -1,7 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getSessionCookie } from "better-auth/cookies";
 
-export function middleware(request: NextRequest) {
+export default function proxy(request: NextRequest) {
+  console.log("proxy exécuté sur :", request.nextUrl.pathname);
   const session = getSessionCookie(request);
 
   const isAuthRoute =
@@ -13,12 +14,12 @@ export function middleware(request: NextRequest) {
   }
 
   if (session && isAuthRoute) {
-    return NextResponse.redirect(new URL("/dashboard", request.url));
+    return NextResponse.redirect(new URL("/schools", request.url));
   }
 
   return NextResponse.next();
 }
 
 export const config = {
-  matcher: ["/((?!api|_next/static|_next/image|favicon.ico).*)"],
+  matcher: ["/schools/:path*", "/sign-in", "/sign-up"],
 };
