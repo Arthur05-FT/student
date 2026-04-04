@@ -1,7 +1,6 @@
 import { z } from "zod";
 
 const emailSchema = z.string();
-const usernameSchema = z.string();
 const phoneSchema = z
   .string()
   .min(1, { message: "Numéro de téléphone invalide" })
@@ -13,7 +12,7 @@ const passwordSchema = z
   .regex(/[A-Z]/, { message: "Doit contenir au moins une majuscule" });
 const identifierSchema = z
   .string()
-  .min(1, { message: "Champ requis" })
+  .min(1, { message: "Email ou numéro de téléphone requis" })
   .pipe(
     z.union([emailSchema.email({ message: "Email invalide" }), phoneSchema]),
   );
@@ -21,12 +20,7 @@ const identifierSchema = z
 export const signUpSchema = z.object({
   firstname: z.string().min(1, { message: "Nom requis" }),
   lastname: z.string().min(1, { message: "Prénom requis" }),
-  phone: phoneSchema.startsWith("6", {
-    message: "Le numéro doit commencer par 6",
-  }),
-  email: emailSchema
-    .min(1, { message: "Email requis" })
-    .email({ message: "Email invalide" }),
+  identifier: identifierSchema,
   password: passwordSchema,
 });
 
