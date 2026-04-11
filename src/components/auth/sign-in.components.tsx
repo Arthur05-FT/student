@@ -13,7 +13,7 @@ import {
 import { Input } from "@/components/ui/input";
 import Link from "next/link";
 import { useSignIn } from "@/lib/hooks/useAuth";
-import SignButton from "./sign-button";
+import SubmitButton from "../shared/submit-button";
 import PasswordField from "./password-field";
 
 const SignInComponent = () => {
@@ -32,7 +32,7 @@ const SignInComponent = () => {
     >
       <FieldGroup>
         <FieldSet>
-          <FieldLegend>Connectez-vous</FieldLegend>
+          <FieldLegend className="font-bold">Connectez-vous</FieldLegend>
           <FieldDescription>
             Gérez, organisez et optimisez la gestion avec Skoul.
           </FieldDescription>
@@ -55,7 +55,7 @@ const SignInComponent = () => {
         </FieldSet>
         <FieldSeparator />
         {betterAuthErrors && <FieldError>{betterAuthErrors}</FieldError>}
-        <SignButton isSubmitting={isSubmitting} type="Se connecter" />
+        <SubmitButton isSubmitting={isSubmitting} type="Se connecter" />
         <Link
           href={"/sign-up"}
           className={

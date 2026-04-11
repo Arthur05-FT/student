@@ -30,9 +30,11 @@ model School {
   name                String       @unique
   email               String?      @unique
   city                String?
+  country             String?
   slug                String       @unique
   status              SchoolStatus @default(ACTIVE)
   onboardingCompleted Boolean      @default(false)
+  type                String?
   createdAt           DateTime     @db.Timestamptz(3)
   updatedAt           DateTime     @db.Timestamptz(3)
   classes             Class[]

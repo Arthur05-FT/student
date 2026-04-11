@@ -2,13 +2,14 @@ import { useRouter } from "next/navigation";
 import { Button } from "../ui/button";
 import { Field, FieldGroup } from "../ui/field";
 import { Spinner } from "../ui/spinner";
+import { ReactNode } from "react";
 
-const SignButton = ({
+const SubmitButton = ({
   isSubmitting,
   type,
 }: {
   isSubmitting: boolean;
-  type: string;
+  type: string | ReactNode;
 }) => {
   const router = useRouter();
 
@@ -17,14 +18,16 @@ const SignButton = ({
       {!isSubmitting ? (
         <Field orientation="horizontal">
           <Button type="submit">{type}</Button>
-          <Button
-            onClick={() => router.back()}
-            className={"underline"}
-            variant="link"
-            type="button"
-          >
-            Retour
-          </Button>
+          {(type == "S'inscrire" || type == "Se connecter") && (
+            <Button
+              onClick={() => router.back()}
+              className={"underline"}
+              variant="link"
+              type="button"
+            >
+              Retour
+            </Button>
+          )}
         </Field>
       ) : (
         <Spinner />
@@ -33,4 +36,4 @@ const SignButton = ({
   );
 };
 
-export default SignButton;
+export default SubmitButton;
