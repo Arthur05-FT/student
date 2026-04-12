@@ -6,10 +6,9 @@ import {
   signUpSchema,
 } from "../schemas/auth.schema";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { signUp } from "../auth/sign-up";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { signIn } from "../auth/sign-in";
+import { signInService, signUpService } from "../services/auth.service";
 
 export const useSignUp = () => {
   const router = useRouter();
@@ -27,7 +26,7 @@ export const useSignUp = () => {
 
   const onSubmit = async (data: SignUpForm) => {
     setBetterAuthErrors(null);
-    await signUp(data, setBetterAuthErrors, router, setIsSubmitting);
+    await signUpService(data, setBetterAuthErrors, router, setIsSubmitting);
   };
 
   return {
@@ -54,7 +53,7 @@ export const useSignIn = () => {
 
   const onSubmit = async (data: SignInForm) => {
     setBetterAuthErrors(null);
-    await signIn(data, setBetterAuthErrors, router, setIsSubmitting);
+    await signInService(data, setBetterAuthErrors, router, setIsSubmitting);
   };
 
   return {

@@ -35,8 +35,8 @@ model School {
   status              SchoolStatus @default(ACTIVE)
   onboardingCompleted Boolean      @default(false)
   type                String?
-  createdAt           DateTime     @db.Timestamptz(3)
-  updatedAt           DateTime     @db.Timestamptz(3)
+  createdAt           DateTime     @default(now())
+  updatedAt           DateTime     @updatedAt
   classes             Class[]
   students            Student[]
   users               User[]
@@ -109,6 +109,7 @@ model Class {
   id        String    @id @default(uuid())
   name      String
   createdAt DateTime  @default(now())
+  updateAt  DateTime  @updatedAt
   schoolId  String
   school    School    @relation(fields: [schoolId], references: [id])
   students  Student[]
@@ -123,6 +124,7 @@ model Student {
   email     String?
   average   Float?
   createdAt DateTime @default(now())
+  updateAt  DateTime  @updatedAt
   schoolId  String
   classId   String?
   class     Class?   @relation(fields: [classId], references: [id])

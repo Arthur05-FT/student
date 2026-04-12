@@ -1,4 +1,4 @@
-export const schoolType = [
+export const schoolTypeData = [
   "École maternelle",
   "École primaire",
   "École secondaire",
@@ -17,7 +17,7 @@ export const schoolType = [
   "École religieuse",
 ];
 
-export const city = [
+export const cityData = [
   "Yaoundé",
   "Douala",
   "Garoua",
@@ -48,7 +48,7 @@ export const city = [
   "Wum",
 ];
 
-export const country = [
+export const countryData = [
   "Algérie",
   "Angola",
   "Bénin",

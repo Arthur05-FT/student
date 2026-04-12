@@ -1,8 +1,8 @@
-import { findSchoolName } from "@/actions/find-school-name.action";
+import { findSchoolByEmailUserName } from "@/lib/actions/school.action";
 import { AppSidebar } from "@/components/layout/app-sidebar";
-import { CreateSchoolComponent } from "@/components/schools/create-school";
+import { CreateSchoolComponent } from "@/components/schools/create-school.component";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
-import { auth } from "@/lib/auth/auth";
+import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
 
 const DashboardLayout = async ({ children }: { children: React.ReactNode }) => {
@@ -10,7 +10,7 @@ const DashboardLayout = async ({ children }: { children: React.ReactNode }) => {
     headers: await headers(),
   });
 
-  const result = await findSchoolName(session?.user.email!);
+  const result = await findSchoolByEmailUserName(session?.user.email!);
 
   return (
     <div className="flex min-h-screen">
