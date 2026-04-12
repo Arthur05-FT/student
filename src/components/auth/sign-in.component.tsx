@@ -12,9 +12,9 @@ import {
 } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import Link from "next/link";
-import { useSignIn } from "@/lib/hooks/useAuth";
+import { useSignIn } from "@/lib/hooks/use-auth";
 import SubmitButton from "../shared/submit-button";
-import PasswordField from "./password-field";
+import PasswordField from "./password-field.component";
 
 const SignInComponent = () => {
   const {

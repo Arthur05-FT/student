@@ -1,6 +1,6 @@
 "use client";
 
-import { useSession } from "@/lib/auth/auth-client";
+import { useSession } from "@/lib/auth-client";
 
 const Schools = () => {
   const session = useSession();
