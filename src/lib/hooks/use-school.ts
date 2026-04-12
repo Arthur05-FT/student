@@ -26,7 +26,7 @@ export const useCreateSchool = () => {
     try {
       setIsSubmitting(true);
       await createSchool(data);
-      router.push(`/schools/${generateSlug(data.name)}`);
+      router.push(`/${generateSlug(data.name)}`);
     } catch (error: any) {
       setServerErrors(error.message);
     } finally {
