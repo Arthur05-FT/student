@@ -23,7 +23,7 @@ export async function signInService(
         setIsSubmitting(true);
       },
       onSuccess: async (ctx) => {
-        router.push(`/schools`);
+        router.push(`/`);
         setIsSubmitting(false);
       },
       onError: (ctx) => {
