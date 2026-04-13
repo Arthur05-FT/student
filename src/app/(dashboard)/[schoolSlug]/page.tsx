@@ -1,7 +1,10 @@
 "use client";
 
+import { useSchoolName } from "@/store/selectors/school.selectors";
+
 const Schools = () => {
-  return <div className="flex flex-1">Schools</div>;
+  const schoolName = useSchoolName();
+  return <div>{schoolName}</div>;
 };
 
 export default Schools;
