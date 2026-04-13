@@ -58,5 +58,10 @@ export const createSchool = async (data: CreateSchoolForm) => {
 export const findSchoolBySlug = async (slug: string) => {
   return await prisma.school.findUnique({
     where: { slug },
+    include: {
+      users: true,
+      students: true,
+      classes: true,
+    },
   });
 };

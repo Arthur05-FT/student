@@ -27,7 +27,7 @@ const SchoolLayout = async ({
   return (
     <div className="flex min-h-screen">
       <SidebarProvider>
-        <AppSidebar />
+        <AppSidebar schoolData={school} />
         <main>
           <SidebarTrigger />
           {children}

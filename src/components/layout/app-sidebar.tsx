@@ -17,8 +17,10 @@ import {
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
 import { ChevronDown } from "lucide-react";
+import { useSchoolStore } from "@/store/school.store";
 
-export function AppSidebar() {
+export function AppSidebar({ schoolData }: { schoolData: any }) {
+  useSchoolStore.setState({ schoolData });
   return (
     <Sidebar collapsible="icon">
       <SidebarHeader>
