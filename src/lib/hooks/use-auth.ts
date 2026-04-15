@@ -8,8 +8,13 @@ import {
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { signInService, signUpService } from "../services/auth.service";
+import {
+  signInService,
+  signOutService,
+  signUpService,
+} from "../services/auth.service";
 
+// use-sign-out.ts
 export const useSignUp = () => {
   const router = useRouter();
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -39,6 +44,7 @@ export const useSignUp = () => {
   };
 };
 
+// use-sign-in.ts
 export const useSignIn = () => {
   const router = useRouter();
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -64,4 +70,15 @@ export const useSignIn = () => {
     betterAuthErrors,
     isSubmitting,
   };
+};
+
+// use-auth.ts
+export const useSignOut = () => {
+  const router = useRouter();
+
+  const signOut = async () => {
+    await signOutService(router);
+  };
+
+  return signOut;
 };

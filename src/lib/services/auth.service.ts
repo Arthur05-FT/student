@@ -66,3 +66,13 @@ export async function signUpService(
     },
   );
 }
+
+export async function signOutService(router: AppRouterInstance) {
+  await authClient.signOut({
+    fetchOptions: {
+      onSuccess: () => {
+        router.push("/sign-in"); // redirect to login page
+      },
+    },
+  });
+}

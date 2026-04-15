@@ -4,6 +4,7 @@ import { headers } from "next/headers";
 import { notFound, redirect } from "next/navigation";
 import { AppSidebar } from "@/components/layout/app-sidebar";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
+import { findUserById } from "@/lib/actions/user.action";
 
 const SchoolLayout = async ({
   children,
@@ -21,13 +22,14 @@ const SchoolLayout = async ({
   if (!session) redirect("/sign-in");
 
   const school = await findSchoolBySlug(schoolSlug);
-
   if (!school) notFound();
+
+  const user = await findUserById(session.user.id);
 
   return (
     <div className="flex min-h-screen">
       <SidebarProvider>
-        <AppSidebar schoolData={school} />
+        <AppSidebar schoolData={school} userData={user} />
         <main>
           <SidebarTrigger />
           {children}
