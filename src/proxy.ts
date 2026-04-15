@@ -20,5 +20,10 @@ export default function proxy(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/", "/:schoolSlug*", "/sign-in", "/sign-up"],
+  matcher: [
+    "/",
+    "/sign-in",
+    "/sign-up",
+    "/((?!sign-in|sign-up|api|_next/static|_next/image|favicon.ico).+)",
+  ],
 };
