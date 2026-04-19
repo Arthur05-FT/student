@@ -5,6 +5,7 @@ import {
   SidebarContent,
   SidebarFooter,
   SidebarGroup,
+  SidebarGroupContent,
   SidebarGroupLabel,
   SidebarHeader,
   SidebarMenu,
@@ -17,11 +18,16 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
-import { ChevronDown, User2 } from "lucide-react";
+import { ChevronDown, PackagePlus } from "lucide-react";
 import { useSchoolStore } from "@/store/school.store";
 import { useUserStore } from "@/store/user.store";
 import SignOutComponent from "../auth/sign-out.component";
 import Link from "next/link";
+import { sideBarLinks } from "@/lib/data";
+import { usePathname } from "next/navigation";
+import { useEffect } from "react";
+import SearchComponent from "../shared/search.component";
+import { FieldSeparator } from "../ui/field";
 
 export function AppSidebar({
   schoolData,
@@ -30,9 +36,12 @@ export function AppSidebar({
   schoolData: any;
   userData: any;
 }) {
-  useSchoolStore.setState({ schoolData });
-  useUserStore.setState({ userData });
-  console.log(userData);
+  const pathname = usePathname();
+  useEffect(() => {
+    useSchoolStore.setState({ schoolData });
+    useUserStore.setState({ userData });
+  }, [schoolData, userData]);
+
   return (
     <Sidebar collapsible="icon">
       <SidebarHeader>
@@ -41,26 +50,63 @@ export function AppSidebar({
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <SidebarMenuButton>
-                  Select Workspace
+                  Sélectionner le Workspace
                   <ChevronDown className="ml-auto" />
                 </SidebarMenuButton>
               </DropdownMenuTrigger>
               <DropdownMenuContent className="w-[--radix-popper-anchor-width]">
-                {/* {userData.school.map((item, index) => (
+                {userData.schools.map((item: any, index: number) => (
                   <DropdownMenuItem key={index}>
-                    <Link href={"/" + item.slug}>{item.name}</Link>
+                    <Link href={"/" + item.school.slug}>
+                      {item.school.name}
+                    </Link>
                   </DropdownMenuItem>
-                ))} */}
+                ))}
+                <FieldSeparator />
+                <DropdownMenuItem className="py-2">
+                  <Link
+                    className="flex gap-2 items-center w-full"
+                    href={"/create-school"}
+                  >
+                    <PackagePlus />
+                    Ajouter une école
+                  </Link>
+                </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
+            <SearchComponent />
           </SidebarMenuItem>
         </SidebarMenu>
       </SidebarHeader>
 
       <SidebarContent>
-        <SidebarGroup>
-          <SidebarGroupLabel>École</SidebarGroupLabel>
-        </SidebarGroup>
+        {sideBarLinks.map((links, i) => (
+          <SidebarGroup key={i}>
+            <SidebarGroupLabel>{links.title}</SidebarGroupLabel>
+            <SidebarGroupContent className="flex flex-col gap-2">
+              {links.subtitle.map((item, index) => {
+                const href = `/${schoolData?.slug}${item?.link ?? ""}`;
+                const isActive = pathname === href;
+
+                return (
+                  <Link
+                    key={index}
+                    href={href}
+                    className={`flex items-center gap-2 hover:text-orange-500 transition-colors ${
+                      isActive ? "text-orange-500" : ""
+                    }`}
+                  >
+                    {item.icon}
+                    {item.name}
+                    {isActive && (
+                      <span className="ml-auto w-2 h-2 rounded-full bg-orange-500" />
+                    )}
+                  </Link>
+                );
+              })}
+            </SidebarGroupContent>
+          </SidebarGroup>
+        ))}
       </SidebarContent>
 
       <SidebarFooter>
