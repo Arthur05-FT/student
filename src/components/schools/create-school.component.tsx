@@ -101,7 +101,7 @@ export const CreateSchoolComponent = () => {
                   />
                 </Field>
               </FieldGroup>
-              <FieldTitle>Quels type d'école possédez-vous ?</FieldTitle>
+              <FieldTitle>Quels type d&apos;école possédez-vous ?</FieldTitle>
               <FieldGroup>
                 <ComboboxComponent
                   name="type"
@@ -114,9 +114,9 @@ export const CreateSchoolComponent = () => {
             </FieldGroup>
             <FieldSeparator />
             {serverErrors && <FieldError>{serverErrors}</FieldError>}
-            {serverErrors == "Veuillez vous reconnectez." && (
-              <Link href="/sign-in">
-                Veuillez vous reconnecter s'il vous plaît.
+            {serverErrors === "Veuillez vous reconnecter." && (
+              <Link href="/sign-in" className="underline text-sm">
+                Veuillez vous reconnecter s&apos;il vous plaît.
               </Link>
             )}
             <Field>

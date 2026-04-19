@@ -46,24 +46,23 @@ model School {
 }
 
 model User {
-  id            String    @id @default(uuid())
+  id            String     @id @default(uuid())
   image         String?
   name          String
-  email         String?   @unique
-  phone         String?   @unique
-  role          UserRole  @default(DIRECTOR)
+  email         String?    @unique
+  phone         String?    @unique
+  // Rôle global plateforme (uniquement SUPER_ADMIN). Le rôle par école est dans UserSchool.role.
+  role          UserRole?
   status        UserStatus @default(ACTIVE)
-  emailVerified Boolean   @default(false)
-  isActive      Boolean   @default(true)
+  emailVerified Boolean    @default(false)
+  isActive      Boolean    @default(true)
   birthdate     DateTime?
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
+  createdAt     DateTime   @default(now())
+  updatedAt     DateTime   @updatedAt
 
-  // Relation many-to-many avec les écoles
-  schools       UserSchool[]
-
-  sessions      Session[]
-  accounts      Account[]
+  schools  UserSchool[]
+  sessions Session[]
+  accounts Account[]
 }
 
 model UserSchool {
@@ -127,10 +126,13 @@ model Classes {
   id        String    @id @default(uuid())
   name      String
   createdAt DateTime  @default(now())
-  updateAt  DateTime  @updatedAt
+  updatedAt DateTime  @updatedAt
   schoolId  String
-  school    School    @relation(fields: [schoolId], references: [id])
+  school    School    @relation(fields: [schoolId], references: [id], onDelete: Cascade)
   students  Student[]
+
+  @@unique([schoolId, name])
+  @@index([schoolId])
 }
 
 model Student {
@@ -142,11 +144,14 @@ model Student {
   email     String?
   average   Float?
   createdAt DateTime @default(now())
-  updateAt  DateTime  @updatedAt
+  updatedAt DateTime @updatedAt
   schoolId  String
   classId   String?
-  class     Classes?   @relation(fields: [classId], references: [id])
-  school    School   @relation(fields: [schoolId], references: [id])
+  class     Classes? @relation(fields: [classId], references: [id], onDelete: SetNull)
+  school    School   @relation(fields: [schoolId], references: [id], onDelete: Cascade)
+
+  @@index([schoolId])
+  @@index([classId])
 }
 
 

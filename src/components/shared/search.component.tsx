@@ -1,5 +1,4 @@
-import React from "react";
-import { Field, FieldDescription, FieldLabel } from "../ui/field";
+import { Field } from "../ui/field";
 import {
   InputGroup,
   InputGroupAddon,
@@ -7,14 +6,21 @@ import {
 } from "../ui/input-group";
 import { Search } from "lucide-react";
 
-const SearchComponent = () => {
+const SearchComponent = ({
+  placeholder = "Rechercher...",
+}: {
+  placeholder?: string;
+}) => {
   return (
     <Field className="max-w-sm pl-2 pt-4">
       <InputGroup>
+        <InputGroupAddon align="inline-start">
+          <Search className="h-4 w-4 opacity-60" />
+        </InputGroupAddon>
         <InputGroupInput
-          id="inline-end-input"
-          type="password"
-          placeholder="Rechercher..."
+          id="search-input"
+          type="search"
+          placeholder={placeholder}
         />
       </InputGroup>
     </Field>

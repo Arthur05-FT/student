@@ -19,28 +19,21 @@ import {
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
 import { ChevronDown, PackagePlus } from "lucide-react";
-import { useSchoolStore } from "@/store/school.store";
-import { useUserStore } from "@/store/user.store";
 import SignOutComponent from "../auth/sign-out.component";
 import Link from "next/link";
 import { sideBarLinks } from "@/lib/data";
 import { usePathname } from "next/navigation";
-import { useEffect } from "react";
 import SearchComponent from "../shared/search.component";
 import { FieldSeparator } from "../ui/field";
+import {
+  useCurrentSchool,
+  useCurrentUser,
+} from "@/lib/contexts/school-context";
 
-export function AppSidebar({
-  schoolData,
-  userData,
-}: {
-  schoolData: any;
-  userData: any;
-}) {
+export function AppSidebar() {
   const pathname = usePathname();
-  useEffect(() => {
-    useSchoolStore.setState({ schoolData });
-    useUserStore.setState({ userData });
-  }, [schoolData, userData]);
+  const school = useCurrentSchool();
+  const user = useCurrentUser();
 
   return (
     <Sidebar collapsible="icon">
@@ -55,10 +48,10 @@ export function AppSidebar({
                 </SidebarMenuButton>
               </DropdownMenuTrigger>
               <DropdownMenuContent className="w-[--radix-popper-anchor-width]">
-                {userData.schools.map((item: any, index: number) => (
-                  <DropdownMenuItem key={index}>
-                    <Link href={"/" + item.school.slug}>
-                      {item.school.name}
+                {user.schools.map((membership) => (
+                  <DropdownMenuItem key={membership.id}>
+                    <Link href={`/${membership.school.slug}`}>
+                      {membership.school.name}
                     </Link>
                   </DropdownMenuItem>
                 ))}
@@ -66,7 +59,7 @@ export function AppSidebar({
                 <DropdownMenuItem className="py-2">
                   <Link
                     className="flex gap-2 items-center w-full"
-                    href={"/create-school"}
+                    href="/create-school"
                   >
                     <PackagePlus />
                     Ajouter une école
@@ -85,7 +78,7 @@ export function AppSidebar({
             <SidebarGroupLabel>{links.title}</SidebarGroupLabel>
             <SidebarGroupContent className="flex flex-col gap-2">
               {links.subtitle.map((item, index) => {
-                const href = `/${schoolData?.slug}${item?.link ?? ""}`;
+                const href = `/${school.slug}${item?.link ?? ""}`;
                 const isActive =
                   item.link === "" || item.link === "/"
                     ? pathname === href
@@ -118,7 +111,7 @@ export function AppSidebar({
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <SidebarMenuButton>
-                  {userData.name}
+                  {user.name}
                   <ChevronDown className="ml-auto" />
                 </SidebarMenuButton>
               </DropdownMenuTrigger>

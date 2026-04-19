@@ -1,4 +1,3 @@
-import React from "react";
 import {
   Combobox,
   ComboboxContent,
@@ -7,22 +6,23 @@ import {
   ComboboxItem,
   ComboboxList,
 } from "../ui/combobox";
-import { Control, Controller, FieldValues } from "react-hook-form";
-import { CreateSchoolForm } from "@/lib/schemas/school.schema";
+import { Control, Controller, FieldValues, Path } from "react-hook-form";
 
-const ComboboxComponent = ({
+type Props<T extends FieldValues> = {
+  name: Path<T>;
+  items: string[];
+  control: Control<T>;
+  errors?: string;
+  placeholder: string;
+};
+
+const ComboboxComponent = <T extends FieldValues>({
   name,
   items,
   control,
   errors,
   placeholder,
-}: {
-  name: string;
-  items: string[];
-  control: any;
-  errors: string;
-  placeholder: string;
-}) => {
+}: Props<T>) => {
   return (
     <>
       <Controller
@@ -36,7 +36,7 @@ const ComboboxComponent = ({
           >
             <ComboboxInput placeholder={placeholder} />
             <ComboboxContent>
-              <ComboboxEmpty>No items found.</ComboboxEmpty>
+              <ComboboxEmpty>Aucun résultat.</ComboboxEmpty>
               <ComboboxList>
                 {(item) => (
                   <ComboboxItem key={item} value={item}>
