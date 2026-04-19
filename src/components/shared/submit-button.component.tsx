@@ -4,7 +4,7 @@ import { Field, FieldGroup } from "../ui/field";
 import { Spinner } from "../ui/spinner";
 import { ReactNode } from "react";
 
-const SubmitButton = ({
+const SubmitButtonComponent = ({
   isSubmitting,
   type,
 }: {
@@ -36,4 +36,4 @@ const SubmitButton = ({
   );
 };
 
-export default SubmitButton;
+export default SubmitButtonComponent;

@@ -17,7 +17,7 @@ const DashboardPage = async () => {
     redirect(`/${generateSlug(result.schoolName)}`);
   }
 
-  return <CreateSchoolComponent />;
+  redirect("/create-school");
 };
 
 export default DashboardPage;

@@ -14,7 +14,7 @@ import {
 import { Input } from "../ui/input";
 import ComboboxComponent from "../shared/combobox.component";
 import { cityData, countryData, schoolTypeData } from "@/lib/data";
-import SubmitButton from "../shared/submit-button";
+import SubmitButtonComponent from "../shared/submit-button.component";
 import { useCreateSchool } from "@/lib/hooks/use-school";
 import Link from "next/link";
 import PolicyConfidentialityLinkComponent from "../shared/policy-confidentiality-link.component";
@@ -120,7 +120,10 @@ export const CreateSchoolComponent = () => {
               </Link>
             )}
             <Field>
-              <SubmitButton type={"Continuer..."} isSubmitting={isSubmitting} />
+              <SubmitButtonComponent
+                type={"Continuer..."}
+                isSubmitting={isSubmitting}
+              />
             </Field>
           </FieldGroup>
         </form>

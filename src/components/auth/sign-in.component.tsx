@@ -13,7 +13,7 @@ import {
 import { Input } from "@/components/ui/input";
 import Link from "next/link";
 import { useSignIn } from "@/lib/hooks/use-auth";
-import SubmitButton from "../shared/submit-button";
+import SubmitButtonComponent from "../shared/submit-button.component";
 import PasswordField from "./password-field.component";
 import PolicyConfidentialityLinkComponent from "../shared/policy-confidentiality-link.component";
 
@@ -57,7 +57,10 @@ const SignInComponent = () => {
           </FieldSet>
           <FieldSeparator />
           {betterAuthErrors && <FieldError>{betterAuthErrors}</FieldError>}
-          <SubmitButton isSubmitting={isSubmitting} type="Se connecter" />
+          <SubmitButtonComponent
+            isSubmitting={isSubmitting}
+            type="Se connecter"
+          />
           <Link
             href={"/sign-up"}
             className={
