@@ -1,7 +1,6 @@
 import Calendar2Icon from "@/components/icons/calendar.icon";
 import ClasseIcon from "@/components/icons/classe.icon";
 import Dashboard3Icon from "@/components/icons/course.icon";
-import DashboardIcon from "@/components/icons/dashboard.icon";
 import File2Icon from "@/components/icons/file.icon";
 import HomeIcon from "@/components/icons/home.icon";
 import Clipboard2Icon from "@/components/icons/matter.icon";
@@ -124,6 +123,7 @@ export const sideBarLinks = [
     subtitle: [
       {
         name: "Accueil",
+        link: "",
         icon: <HomeIcon size={"18"} />,
       },
       {
@@ -143,7 +143,7 @@ export const sideBarLinks = [
     subtitle: [
       {
         name: "Classes",
-        link: "/class",
+        link: "/classes",
         icon: <ClasseIcon size={"18"} />,
       },
       {
@@ -202,5 +202,32 @@ export const sideBarLinks = [
         icon: <Chart15Icon size={"18"} />,
       },
     ],
+  },
+];
+
+export const classNavbarData = [
+  {
+    name: "Toutes les classes",
+    link: "",
+  },
+  {
+    name: "Etudiants",
+    link: "/students",
+  },
+  {
+    name: "Emploi du temps",
+    link: "/timetables",
+  },
+  {
+    name: "Enseignants",
+    link: "/teachers",
+  },
+  {
+    name: "Notes",
+    link: "/grades",
+  },
+  {
+    name: "Présences",
+    link: "/presences",
   },
 ];

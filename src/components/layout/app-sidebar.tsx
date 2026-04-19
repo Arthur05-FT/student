@@ -86,7 +86,10 @@ export function AppSidebar({
             <SidebarGroupContent className="flex flex-col gap-2">
               {links.subtitle.map((item, index) => {
                 const href = `/${schoolData?.slug}${item?.link ?? ""}`;
-                const isActive = pathname === href;
+                const isActive =
+                  item.link === "" || item.link === "/"
+                    ? pathname === href
+                    : pathname.startsWith(href);
 
                 return (
                   <Link

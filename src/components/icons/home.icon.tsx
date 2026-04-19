@@ -12,9 +12,9 @@ const HomeIcon = ({ size }: HomeIconProps) => (
     <g
       fill="none"
       stroke="currentColor"
-      stroke-linecap="round"
-      stroke-linejoin="round"
-      stroke-width="1.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth="1.5"
       color="currentColor"
     >
       <path d="M15 17c-.8.622-1.85 1-3 1s-2.2-.378-3-1"></path>

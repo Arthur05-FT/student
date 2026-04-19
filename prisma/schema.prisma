@@ -41,7 +41,7 @@ model School {
   // Relation many-to-many avec les utilisateurs
   users               UserSchool[]
 
-  classes             Class[]
+  classes             Classes[]
   students            Student[]
 }
 
@@ -123,7 +123,7 @@ model Verification {
   @@index([identifier])
 }
 
-model Class {
+model Classes {
   id        String    @id @default(uuid())
   name      String
   createdAt DateTime  @default(now())
@@ -145,7 +145,7 @@ model Student {
   updateAt  DateTime  @updatedAt
   schoolId  String
   classId   String?
-  class     Class?   @relation(fields: [classId], references: [id])
+  class     Classes?   @relation(fields: [classId], references: [id])
   school    School   @relation(fields: [schoolId], references: [id])
 }
 
