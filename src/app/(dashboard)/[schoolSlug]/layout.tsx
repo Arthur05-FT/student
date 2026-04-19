@@ -30,7 +30,7 @@ const SchoolLayout = async ({
     <div className="flex min-h-screen">
       <SidebarProvider>
         <AppSidebar schoolData={school} userData={user} />
-        <main className="py-2 px-4">{children}</main>
+        <main className="px-4 flex-1">{children}</main>
       </SidebarProvider>
     </div>
   );
