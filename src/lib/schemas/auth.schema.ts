@@ -1,20 +1,25 @@
 import { z } from "zod";
 
-const emailSchema = z.string();
+const emailSchema = z.string().email({ message: "Email invalide" });
+
 const phoneSchema = z
   .string()
-  .min(1, { message: "Numéro de téléphone invalide" })
-  .max(9, { message: "Numéro de téléphone invalide" });
+  .regex(/^\+?[0-9\s().-]{8,20}$/, {
+    message: "Numéro de téléphone invalide",
+  });
+
 const passwordSchema = z
   .string()
   .min(8, { message: "Le mot de passe doit contenir au moins 8 caractères" })
   .regex(/[0-9]/, { message: "Doit contenir au moins un chiffre" })
   .regex(/[A-Z]/, { message: "Doit contenir au moins une majuscule" });
+
 const identifierSchema = z
   .string()
   .min(1, { message: "Email ou numéro de téléphone requis" })
-  .pipe(
-    z.union([emailSchema.email({ message: "Email invalide" }), phoneSchema]),
+  .refine(
+    (val) => emailSchema.safeParse(val).success || phoneSchema.safeParse(val).success,
+    { message: "Email ou numéro de téléphone invalide" },
   );
 
 export const signUpSchema = z.object({

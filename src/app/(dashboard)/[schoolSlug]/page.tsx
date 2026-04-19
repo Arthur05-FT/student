@@ -1,16 +1,16 @@
 "use client";
 
-import { useSchoolName } from "@/store/selectors/school.selectors";
+import { useCurrentSchool } from "@/lib/contexts/school-context";
 
-const Schools = () => {
-  const schoolName = useSchoolName();
+const SchoolHomePage = () => {
+  const school = useCurrentSchool();
   return (
     <div>
       <h1 className="scroll-m-20 text-center text-2xl font-extrabold tracking-tight text-balance">
-        {schoolName}.
+        {school.name}.
       </h1>
     </div>
   );
 };
 
-export default Schools;
+export default SchoolHomePage;

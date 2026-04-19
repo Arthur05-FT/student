@@ -1,16 +1,14 @@
-// app/[schoolSlug]/classes/layout.tsx
-import { use } from "react";
 import Navbar from "@/components/layout/nav-bar";
 import { classNavbarData } from "@/lib/data";
 
-const ClassesLayout = ({
+const ClassesLayout = async ({
   children,
   params,
 }: {
   children: React.ReactNode;
   params: Promise<{ schoolSlug: string }>;
 }) => {
-  const { schoolSlug } = use(params); // ← use() au lieu de await
+  const { schoolSlug } = await params;
 
   return (
     <>

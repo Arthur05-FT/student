@@ -1,19 +1,33 @@
 import z from "zod";
 
-const nameSchema = z.string().min(1, { message: "Nom de l'école requis" });
-const emailSchema = z.string().email({ message: "Email de l'école requis" });
-const citySchema = z.string().min(1, { message: "Ville de l'école requis" });
-const countrySchema = z.string().min(1, { message: "Pays de l'école requis" });
-const schoolTypeSchema = z
+const optionalEmail = z
   .string()
-  .min(1, { message: "Pays de l'école requis" });
+  .email({ message: "Email invalide" })
+  .or(z.literal(""))
+  .optional();
 
 export const createSchoolSchema = z.object({
-  name: nameSchema,
-  email: emailSchema,
-  city: citySchema,
-  country: countrySchema,
-  type: schoolTypeSchema,
+  name: z.string().min(1, { message: "Nom de l'école requis" }),
+  email: optionalEmail,
+  city: z.string().min(1, { message: "Ville de l'école requise" }),
+  country: z.string().min(1, { message: "Pays de l'école requis" }),
+  type: z.string().min(1, { message: "Type d'école requis" }),
+});
+
+export const updateSchoolSchema = z.object({
+  schoolSlug: z.string().min(1),
+  name: z.string().min(1).optional(),
+  email: optionalEmail,
+  city: z.string().min(1).optional(),
+  country: z.string().min(1).optional(),
+  type: z.string().min(1).optional(),
+  onboardingCompleted: z.boolean().optional(),
+});
+
+export const deleteSchoolSchema = z.object({
+  schoolSlug: z.string().min(1),
 });
 
 export type CreateSchoolForm = z.infer<typeof createSchoolSchema>;
+export type UpdateSchoolInput = z.infer<typeof updateSchoolSchema>;
+export type DeleteSchoolInput = z.infer<typeof deleteSchoolSchema>;
