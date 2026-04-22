@@ -10,12 +10,19 @@ if (!connectionString) {
   throw new Error("DATABASE_URL is not defined");
 }
 
-const prisma = new PrismaClient({ adapter: new PrismaPg({ connectionString }) });
+const prisma = new PrismaClient({
+  adapter: new PrismaPg({ connectionString }),
+});
 
 export const auth = betterAuth({
   database: prismaAdapter(prisma, { provider: "postgresql" }),
   emailAndPassword: { enabled: true, autoSignIn: false },
-  trustedOrigins: process.env.WEB_ORIGIN ? [process.env.WEB_ORIGIN] : undefined,
+  trustedOrigins: [process.env.WEB_ORIGIN ?? "http://localhost:3000"],
+  advanced: {
+    ipAddress: {
+      ipAddressHeaders: ["x-forwarded-for", "x-real-ip"],
+    },
+  },
   hooks: {
     before: createAuthMiddleware(async (ctx) => {
       if (ctx.path === "/sign-in/email") {
@@ -25,7 +32,9 @@ export const auth = betterAuth({
           select: { status: true },
         });
         if (user?.status === "SUSPENDED") {
-          throw new APIError("FORBIDDEN", { message: "Votre compte a été suspendu." });
+          throw new APIError("FORBIDDEN", {
+            message: "Votre compte a été suspendu.",
+          });
         }
       }
     }),
