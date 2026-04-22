@@ -1,0 +1,157 @@
+
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum UserRole {
+  SUPER_ADMIN
+  DIRECTOR
+  ADMIN
+  TEACHER
+}
+
+enum SchoolStatus {
+  ACTIVE
+  SUSPENDED
+}
+
+enum UserStatus {
+  ACTIVE
+  SUSPENDED
+}
+
+model School {
+  id                  String       @id @default(uuid())
+  name                String       @unique
+  email               String?      @unique
+  city                String?
+  country             String?
+  slug                String       @unique
+  status              SchoolStatus @default(ACTIVE)
+  onboardingCompleted Boolean      @default(false)
+  type                String?
+  createdAt           DateTime     @default(now())
+  updatedAt           DateTime     @updatedAt
+
+  // Relation many-to-many avec les utilisateurs
+  users               UserSchool[]
+
+  classes             Classes[]
+  students            Student[]
+}
+
+model User {
+  id            String     @id @default(uuid())
+  image         String?
+  name          String
+  email         String?    @unique
+  phone         String?    @unique
+  // Rôle global plateforme (uniquement SUPER_ADMIN). Le rôle par école est dans UserSchool.role.
+  role          UserRole?
+  status        UserStatus @default(ACTIVE)
+  emailVerified Boolean    @default(false)
+  isActive      Boolean    @default(true)
+  birthdate     DateTime?
+  createdAt     DateTime   @default(now())
+  updatedAt     DateTime   @updatedAt
+
+  schools  UserSchool[]
+  sessions Session[]
+  accounts Account[]
+}
+
+model UserSchool {
+  id        String   @id @default(uuid())
+  userId    String
+  schoolId  String
+  joinedAt  DateTime @default(now())
+  role      UserRole @default(DIRECTOR)
+
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  school    School   @relation(fields: [schoolId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, schoolId]) 
+}
+
+model Session {
+  id        String   @id
+  user      User     @relation(fields: [userId], references: [id])
+  userId    String
+  token     String   @unique
+  expiresAt DateTime @db.Timestamptz(3)
+  ipAddress String?
+  userAgent String?
+  createdAt DateTime @db.Timestamptz(3)
+  updatedAt DateTime @db.Timestamptz(3)
+
+  @@index([userId])
+}
+
+model Account {
+  id                    String    @id
+  user                  User      @relation(fields: [userId], references: [id])
+  userId                String
+  accountId             String
+  providerId            String
+  accessToken           String?
+  refreshToken          String?
+  accessTokenExpiresAt  DateTime? @db.Timestamptz(3)
+  refreshTokenExpiresAt DateTime? @db.Timestamptz(3)
+  scope                 String?
+  idToken               String?
+  password              String?
+  createdAt             DateTime  @db.Timestamptz(3)
+  updatedAt             DateTime  @db.Timestamptz(3)
+
+  @@index([userId])
+}
+
+model Verification {
+  id         String   @id
+  identifier String
+  value      String
+  expiresAt  DateTime @db.Timestamptz(3)
+  createdAt  DateTime @db.Timestamptz(3)
+  updatedAt  DateTime @db.Timestamptz(3)
+
+  @@index([identifier])
+}
+
+model Classes {
+  id        String    @id @default(uuid())
+  name      String
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  schoolId  String
+  school    School    @relation(fields: [schoolId], references: [id], onDelete: Cascade)
+  students  Student[]
+
+  @@unique([schoolId, name])
+  @@index([schoolId])
+}
+
+model Student {
+  id        String   @id @default(uuid())
+  matricule String   @unique
+  firstname String
+  lastname  String
+  phone     String?
+  email     String?
+  average   Float?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  schoolId  String
+  classId   String?
+  class     Classes? @relation(fields: [classId], references: [id], onDelete: SetNull)
+  school    School   @relation(fields: [schoolId], references: [id], onDelete: Cascade)
+
+  @@index([schoolId])
+  @@index([classId])
+}
+
+

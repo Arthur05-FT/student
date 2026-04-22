@@ -3,7 +3,7 @@ import { prismaAdapter } from "better-auth/adapters/prisma";
 import { APIError, createAuthMiddleware } from "better-auth/api";
 import { i18n } from "@better-auth/i18n";
 import { PrismaPg } from "@prisma/adapter-pg";
-import { PrismaClient } from "../../../../generated/prisma/client";
+import { PrismaClient } from "../generated/prisma/client";
 
 const connectionString = process.env.DATABASE_URL;
 if (!connectionString) {

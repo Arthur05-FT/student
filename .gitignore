@@ -1,7 +1,7 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
-# dependencies
-/node_modules
+# dependencies (root + workspaces)
+node_modules/
 /.pnp
 .pnp.*
 .yarn/*
@@ -17,8 +17,9 @@
 /.next/
 /out/
 
-# production
+# build output
 /build
+dist/
 
 # misc
 .DS_Store
@@ -32,6 +33,7 @@ yarn-error.log*
 
 # env files (can opt-in for committing if needed)
 .env*
+!.env.example
 
 # vercel
 .vercel
@@ -40,6 +42,5 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
-/src/generated/prisma
-
-/generated/prisma
+# Prisma generated client (live in apps/api after migration)
+apps/api/src/generated/
