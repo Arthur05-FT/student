@@ -1,9 +1,8 @@
 "use client";
 
 import { createContext, useContext } from "react";
-import type { SchoolDetail } from "@/lib/actions/school.types";
-import type { SafeUser } from "@/lib/actions/user.types";
-import type { UserRole } from "../../../generated/prisma/enums";
+import type { SchoolDetail, SafeUser } from "@/lib/api/types";
+import type { UserRole } from "@/lib/api/enums";
 
 export interface SchoolDashboardContext {
   school: SchoolDetail;

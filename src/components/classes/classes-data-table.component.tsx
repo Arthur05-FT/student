@@ -1,20 +1,21 @@
 "use client";
 
 import {
+  ColumnDef,
   flexRender,
   getCoreRowModel,
   useReactTable,
 } from "@tanstack/react-table";
 
-type Props<TData> = {
-  columns: any;
+type Props<TData, TValue> = {
+  columns: ColumnDef<TData, TValue>[];
   data: TData[];
 };
 
-export function ClassesDataTableComponent<TData>({
+export function ClassesDataTableComponent<TData, TValue>({
   columns,
   data,
-}: Props<TData>) {
+}: Props<TData, TValue>) {
   const table = useReactTable({
     data,
     columns,
