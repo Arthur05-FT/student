@@ -1,5 +1,5 @@
 import Navbar from "@/components/layout/nav-bar";
-import { classNavbarData } from "@/lib/data";
+import { classesStatistics } from "@/lib/data";
 
 const ClassesLayout = async ({
   children,
@@ -13,9 +13,9 @@ const ClassesLayout = async ({
   return (
     <>
       <Navbar
-        title="Classes."
+        title="Salles de classe"
         basePath={`/${schoolSlug}/classes`}
-        navbarData={classNavbarData}
+        description="Gérez les salles de l'établissement — capacités, équipements, affectations et taux d'occupation."
       />
       {children}
     </>
