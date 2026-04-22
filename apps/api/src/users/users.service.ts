@@ -6,7 +6,7 @@ import {
   UpdateMembershipRoleDto,
   UpdateUserProfileDto,
 } from "../schemas/user.schema";
-import type { UserRole } from "../../../../generated/prisma/enums";
+import type { UserRole } from "../generated/prisma/enums";
 
 const safeUserSelect = {
   id: true,

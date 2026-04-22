@@ -4,7 +4,7 @@ import type { Request } from "express";
 import { PrismaService } from "../../prisma/prisma.service";
 import { AppError } from "../errors";
 import { ROLES_KEY } from "../decorators/roles.decorator";
-import type { UserRole } from "../../../../../generated/prisma/enums";
+import type { UserRole } from "../../generated/prisma/enums";
 import type { SessionContext } from "./session.guard";
 
 export type Membership = {

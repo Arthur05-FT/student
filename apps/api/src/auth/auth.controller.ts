@@ -7,7 +7,7 @@ const handler = toNodeHandler(auth);
 
 @Controller("api/auth")
 export class AuthController {
-  @All("*")
+  @All("*path")
   async handle(@Req() req: Request, @Res() res: Response): Promise<void> {
     await handler(req, res);
   }
