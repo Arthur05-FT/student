@@ -3,8 +3,8 @@ import { CreateSchoolForm, createSchoolSchema } from "../schemas/school.schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { generateSlug } from "../generate-slug";
-import { createSchool } from "@/lib/actions/school.action";
+import { schoolsApi } from "@/lib/api/schools.api";
+import { ApiError } from "@/lib/api/client";
 
 export const useCreateSchool = () => {
   const { register, control, handleSubmit, formState } = useForm<CreateSchoolForm>({
@@ -25,13 +25,15 @@ export const useCreateSchool = () => {
     setServerErrors(null);
     setIsSubmitting(true);
     try {
-      await createSchool(data);
-      router.push(`/${generateSlug(data.name)}`);
+      const created = await schoolsApi.create(data);
+      router.push(`/${created.slug}`);
     } catch (error: unknown) {
       const message =
-        error instanceof Error
+        error instanceof ApiError
           ? error.message
-          : "Une erreur inattendue est survenue.";
+          : error instanceof Error
+            ? error.message
+            : "Une erreur inattendue est survenue.";
       setServerErrors(message);
     } finally {
       setIsSubmitting(false);

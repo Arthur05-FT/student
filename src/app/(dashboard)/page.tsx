@@ -1,16 +1,18 @@
-import { findSchoolByEmailUserName } from "@/lib/actions/school.action";
-import { auth } from "@/lib/auth";
-import { headers } from "next/headers";
 import { redirect } from "next/navigation";
+import { usersApi } from "@/lib/api/users.api";
+import { ApiError } from "@/lib/api/client";
 
 const DashboardPage = async () => {
-  const session = await auth.api.getSession({ headers: await headers() });
+  let user;
+  try {
+    user = await usersApi.meServer();
+  } catch (err) {
+    if (err instanceof ApiError && err.status === 401) redirect("/sign-in");
+    throw err;
+  }
 
-  if (!session?.user?.email) redirect("/sign-in");
-
-  const result = await findSchoolByEmailUserName(session.user.email);
-
-  if (result.schoolSlug) redirect(`/${result.schoolSlug}`);
+  const firstSchool = user.schools[0]?.school;
+  if (firstSchool) redirect(`/${firstSchool.slug}`);
 
   redirect("/create-school");
 };

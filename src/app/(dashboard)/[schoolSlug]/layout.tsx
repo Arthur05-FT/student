@@ -1,14 +1,10 @@
-import { auth } from "@/lib/auth";
-import {
-  findSchoolBySlug,
-  findUserSchoolMembership,
-} from "@/lib/actions/school.action";
-import { headers } from "next/headers";
 import { notFound, redirect } from "next/navigation";
 import { AppSidebar } from "@/components/layout/app-sidebar";
 import { SidebarProvider } from "@/components/ui/sidebar";
-import { findUserById } from "@/lib/actions/user.action";
 import { SchoolDashboardProvider } from "@/lib/contexts/school-context";
+import { schoolsApi } from "@/lib/api/schools.api";
+import { usersApi } from "@/lib/api/users.api";
+import { ApiError } from "@/lib/api/client";
 
 const SchoolLayout = async ({
   children,
@@ -19,18 +15,21 @@ const SchoolLayout = async ({
 }) => {
   const { schoolSlug } = await params;
 
-  const session = await auth.api.getSession({ headers: await headers() });
-  if (!session) redirect("/sign-in");
+  let school, user;
+  try {
+    [school, user] = await Promise.all([
+      schoolsApi.bySlugServer(schoolSlug),
+      usersApi.meServer(),
+    ]);
+  } catch (err) {
+    if (err instanceof ApiError) {
+      if (err.status === 401) redirect("/sign-in");
+      if (err.status === 403 || err.status === 404) notFound();
+    }
+    throw err;
+  }
 
-  const [school, user] = await Promise.all([
-    findSchoolBySlug(schoolSlug),
-    findUserById(session.user.id),
-  ]);
-
-  if (!school) notFound();
-  if (!user) redirect("/sign-in");
-
-  const membership = await findUserSchoolMembership(user.id, school.id);
+  const membership = user.schools.find((s) => s.schoolId === school.id);
   if (!membership) notFound();
 
   return (
