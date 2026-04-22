@@ -40,7 +40,7 @@ const SchoolLayout = async ({
       <div className="flex min-h-screen">
         <SidebarProvider>
           <AppSidebar />
-          <main className="px-4 flex-1">{children}</main>
+          <main className="flex-1">{children}</main>
         </SidebarProvider>
       </div>
     </SchoolDashboardProvider>

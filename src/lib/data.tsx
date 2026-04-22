@@ -117,6 +117,7 @@ export const countryData = [
   "Afrique du Sud",
 ];
 
+// sidebar
 export const sideBarLinks = [
   {
     title: "Général",
@@ -205,29 +206,23 @@ export const sideBarLinks = [
   },
 ];
 
-export const classNavbarData = [
+// classes
+
+export const classesStatistics = [
   {
-    name: "Toutes les classes",
-    link: "",
+    name: "Nombre de salles",
+    number: 32,
   },
   {
-    name: "Etudiants",
-    link: "/students",
+    name: "Elèves inscrits",
+    number: 1042,
   },
   {
-    name: "Emploi du temps",
-    link: "/timetables",
+    name: "Professeurs affectés",
+    number: 12,
   },
   {
-    name: "Enseignants",
-    link: "/teachers",
-  },
-  {
-    name: "Notes",
-    link: "/grades",
-  },
-  {
-    name: "Présences",
-    link: "/presences",
+    name: "Taux d'occupation",
+    number: "78%",
   },
 ];
