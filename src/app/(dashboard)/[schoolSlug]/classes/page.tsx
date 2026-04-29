@@ -10,9 +10,6 @@ const ClassesPage = () => {
       <div className="flex flex-col flex-2">
         <ClassesStatisticsComponent />
         <div>
-          <div className="flex p-4">
-            <ClassesSearch />
-          </div>
           <ClassesDataTableComponent columns={columnClasses} data={[]} />
         </div>
       </div>

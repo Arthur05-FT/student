@@ -1,3 +1,5 @@
+"use server";
+
 // Helper pour appeler l'API depuis les Server Components / Server Actions.
 // Forward le cookie Better Auth de la requête entrante au backend NestJS.
 import { headers } from "next/headers";
