@@ -13,21 +13,29 @@ import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import { Spinner } from "../ui/spinner";
 import ComboboxComponent from "../shared/combobox.component";
-import { useCreateClasse } from "@/lib/hooks/use-classe";
+import { useUpdateClasse } from "@/lib/hooks/use-classe";
 import { levelData } from "@/lib/data";
 import { capitalize } from "@/lib/utils";
-import type { TeacherItem } from "@/lib/api/types";
+import type { ClassesListItem, TeacherItem } from "@/lib/api/types";
 
 const levelItems = levelData.map(capitalize);
 
-const ClasseCreateComponent = ({ teachers }: { teachers: TeacherItem[] }) => {
-  const { register, control, handleSubmit, formState, onSubmit, serverError, teacherItems } =
-    useCreateClasse(teachers);
+const ClasseEditComponent = ({
+  classe,
+  teachers,
+  onSuccess,
+}: {
+  classe: ClassesListItem;
+  teachers: TeacherItem[];
+  onSuccess: (updated: ClassesListItem) => void;
+}) => {
+  const { register, control, handleSubmit, formState, onSubmit, serverError, reset, teacherItems } =
+    useUpdateClasse(classe, teachers, onSuccess);
 
   return (
     <DrawerWrapper
-      title="Ajouter une classe"
-      description="Créez une nouvelle classe pour votre établissement."
+      title="Modifier la classe"
+      description="Modifiez les informations de cette classe."
     >
       <form
         onSubmit={handleSubmit(onSubmit)}
@@ -87,10 +95,10 @@ const ClasseCreateComponent = ({ teachers }: { teachers: TeacherItem[] }) => {
 
         <div className="flex gap-2">
           <Button type="submit" disabled={formState.isSubmitting}>
-            {formState.isSubmitting ? <Spinner /> : "Ajouter"}
+            {formState.isSubmitting ? <Spinner /> : "Enregistrer"}
           </Button>
           <DrawerClose asChild>
-            <Button variant="outline" type="button">Annuler</Button>
+            <Button variant="outline" type="button" onClick={() => reset()}>Annuler</Button>
           </DrawerClose>
         </div>
       </form>
@@ -98,4 +106,4 @@ const ClasseCreateComponent = ({ teachers }: { teachers: TeacherItem[] }) => {
   );
 };
 
-export default ClasseCreateComponent;
+export default ClasseEditComponent;
