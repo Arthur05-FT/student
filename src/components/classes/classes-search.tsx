@@ -71,7 +71,7 @@ const ClassesSearch = ({
 
       <div className="border-x px-3 flex items-center gap-2 flex-wrap min-h-6">
         {!hasFilters && (
-          <span className="font-light text-chart-4 text-xs">Aucun filtre</span>
+          <span className="text-chart-4 text-xs">Aucun filtre</span>
         )}
 
         {levelFilter.map((level) => (
@@ -85,7 +85,9 @@ const ClassesSearch = ({
         {headTeacherFilter !== "all" && (
           <FilterBadge
             label={
-              headTeacherFilter === "with" ? "Avec prof. principal" : "Sans prof. principal"
+              headTeacherFilter === "with"
+                ? "Avec prof. principal"
+                : "Sans prof. principal"
             }
             onRemove={() => setHeadTeacherFilter("all")}
           />
@@ -104,7 +106,7 @@ const ClassesSearch = ({
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button
-            className="font-light text-chart-4 rounded-sm"
+            className="text-chart-4 rounded-sm"
             size="xs"
             variant="outline"
           >
@@ -144,11 +146,19 @@ const ClassesSearch = ({
               <DropdownMenuSubContent>
                 <DropdownMenuRadioGroup
                   value={headTeacherFilter}
-                  onValueChange={(v) => setHeadTeacherFilter(v as HeadTeacherFilter)}
+                  onValueChange={(v) =>
+                    setHeadTeacherFilter(v as HeadTeacherFilter)
+                  }
                 >
-                  <DropdownMenuRadioItem value="all">Tous</DropdownMenuRadioItem>
-                  <DropdownMenuRadioItem value="with">Avec prof. principal</DropdownMenuRadioItem>
-                  <DropdownMenuRadioItem value="without">Sans prof. principal</DropdownMenuRadioItem>
+                  <DropdownMenuRadioItem value="all">
+                    Tous
+                  </DropdownMenuRadioItem>
+                  <DropdownMenuRadioItem value="with">
+                    Avec prof. principal
+                  </DropdownMenuRadioItem>
+                  <DropdownMenuRadioItem value="without">
+                    Sans prof. principal
+                  </DropdownMenuRadioItem>
                 </DropdownMenuRadioGroup>
               </DropdownMenuSubContent>
             </DropdownMenuSub>

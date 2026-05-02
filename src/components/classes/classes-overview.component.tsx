@@ -1,3 +1,4 @@
+import { OverviewShellEmpty } from "../shared/overview-shell.component";
 import OverviewPanel from "./classes-overview-panel.component";
 import type { ClassesListItem, TeacherItem } from "@/lib/api/types";
 
@@ -13,13 +14,7 @@ const ClassesOverviewComponent = ({
   onClassDeleted: (id: string) => void;
 }) => {
   if (!selectedClass) {
-    return (
-      <div className="flex-none w-md border-l flex flex-col items-center justify-center gap-2 text-muted-foreground p-6">
-        <p className="text-sm text-center">
-          Sélectionnez une classe pour voir ses détails.
-        </p>
-      </div>
-    );
+    return <OverviewShellEmpty message="Sélectionnez une classe pour voir ses détails." />;
   }
 
   return (
