@@ -3,15 +3,17 @@
 import { useRouter } from "next/navigation";
 import { Button } from "../ui/button";
 import { ArrowLeft, Plus } from "lucide-react";
-import { Route } from "next";
+import { Drawer, DrawerTrigger } from "../ui/drawer";
 
 const Navbar = ({
   title,
-  basePath,
+  btnText,
+  formDrawed,
   description,
 }: {
   title: string;
-  basePath: string;
+  btnText: string;
+  formDrawed: React.ReactNode;
   description: string;
 }) => {
   const router = useRouter();
@@ -23,16 +25,18 @@ const Navbar = ({
           <ArrowLeft />
           Retour
         </Button>
-        <Button
-          onClick={() => router.push(`${basePath}/create-classes` as Route)}
-          className="flex items-center text-xs"
-        >
-          <Plus />
-          Ajouter classe
-          <span className="border -rotate-12 rounded text-xs bg-accent text-foreground px-1 font-semibold">
-            N
-          </span>
-        </Button>
+        <Drawer direction="right">
+          <DrawerTrigger asChild>
+            <Button className="flex items-center text-xs">
+              <Plus />
+              {btnText}
+              <span className="border -rotate-12 rounded text-xs bg-accent text-foreground px-1 font-semibold">
+                N
+              </span>
+            </Button>
+          </DrawerTrigger>
+          {formDrawed}
+        </Drawer>
       </div>
       <div className="p-4 border-b">
         <h1 className="scroll-m-20 text-2xl font-extrabold tracking-tight text-balance">
