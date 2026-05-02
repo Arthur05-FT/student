@@ -1,9 +1,12 @@
 import z from "zod";
 
-const optionalEmail = z.preprocess(
-  (val) => (val === "" ? undefined : val),
-  z.email({ message: "Email invalide" }).optional(),
-);
+const optionalEmail = z
+  .string()
+  .optional()
+  .refine(
+    (val) => !val || val === "" || z.email().safeParse(val).success,
+    { message: "Email invalide" },
+  );
 
 export const createSchoolSchema = z.object({
   name: z.string().min(1, { message: "Nom de l'école requis" }),

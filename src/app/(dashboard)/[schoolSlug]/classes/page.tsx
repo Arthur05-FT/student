@@ -35,7 +35,7 @@ const ClassesPage = async ({
         formDrawed={<ClasseCreateComponent teachers={teachers} />}
         description="Gérez les salles de l'établissement — capacités, équipements, affectations et taux d'occupation."
       />
-      <ClassesContent classes={classes} />
+      <ClassesContent classes={classes} teachers={teachers} />
     </>
   );
 };
