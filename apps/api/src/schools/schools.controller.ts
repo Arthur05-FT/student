@@ -7,7 +7,6 @@ import {
   Post,
   Query,
   UseGuards,
-  UsePipes,
 } from "@nestjs/common";
 import { SchoolsService } from "./schools.service";
 import { SessionGuard, SessionContext } from "../common/guards/session.guard";
@@ -39,8 +38,10 @@ export class SchoolsController {
   }
 
   @Post()
-  @UsePipes(new ZodValidationPipe(createSchoolSchema))
-  create(@Session() session: SessionContext, @Body() body: CreateSchoolDto) {
+  create(
+    @Session() session: SessionContext,
+    @Body(new ZodValidationPipe(createSchoolSchema)) body: CreateSchoolDto,
+  ) {
     return this.schools.create(session.userId, body);
   }
 

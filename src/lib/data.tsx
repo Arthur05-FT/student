@@ -11,23 +11,34 @@ import { Chart15Icon, ChartIcon } from "@/components/icons/statistics.icon";
 import CalendarCheckIcon from "@/components/icons/timestable.icon";
 import DollarIcon from "@/components/icons/tuition.icon";
 
+export const levelData = [
+  // Maternelle
+  "petite section",
+  "moyenne section",
+  "grande section",
+  // Primaire
+  "sil",
+  "cp",
+  "ce1",
+  "ce2",
+  "cm1",
+  "cm2",
+  // Collège
+  "6ème",
+  "5ème",
+  "4ème",
+  "3ème",
+  // Lycée
+  "seconde",
+  "première",
+  "terminale",
+];
+
 export const schoolTypeData = [
   "École maternelle",
   "École primaire",
   "École secondaire",
   "Université",
-  "École publique",
-  "École privée",
-  "École confessionnelle (catholique, protestante, etc.)",
-  "Enseignement général",
-  "Enseignement technique",
-  "Enseignement professionnel",
-  "École normale (formation des enseignants)",
-  "École francophone",
-  "École anglophone",
-  "École bilingue",
-  "École laïque",
-  "École religieuse",
 ];
 
 export const cityData = [
@@ -206,23 +217,3 @@ export const sideBarLinks = [
   },
 ];
 
-// classes
-
-export const classesStatistics = [
-  {
-    name: "Nombre de salles",
-    number: 32,
-  },
-  {
-    name: "Elèves inscrits",
-    number: 1042,
-  },
-  {
-    name: "Professeurs affectés",
-    number: 12,
-  },
-  {
-    name: "Taux d'occupation",
-    number: "78%",
-  },
-];

@@ -11,13 +11,34 @@ export const classesApi = {
   byId: (slug: string, id: string) =>
     apiFetch<ClassesDetail>(`/schools/${slug}/classes/${id}`),
 
-  create: (slug: string, body: { name: string }) =>
+  create: (
+    slug: string,
+    body: {
+      name: string;
+      level: string;
+      headTeacherId?: string;
+      capacity?: string;
+      room?: string;
+      building?: string;
+    },
+  ) =>
     apiFetch<ClassesListItem>(`/schools/${slug}/classes`, {
       method: "POST",
       body,
     }),
 
-  update: (slug: string, id: string, body: { name: string }) =>
+  update: (
+    slug: string,
+    id: string,
+    body: {
+      name?: string;
+      level?: string;
+      headTeacherId?: string | null;
+      capacity?: string;
+      room?: string;
+      building?: string;
+    },
+  ) =>
     apiFetch<ClassesListItem>(`/schools/${slug}/classes/${id}`, {
       method: "PATCH",
       body,

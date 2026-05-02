@@ -19,6 +19,7 @@ import {
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
 import { ChevronDown, PackagePlus } from "lucide-react";
+import type { Route } from "next";
 import SignOutComponent from "../auth/sign-out.component";
 import Link from "next/link";
 import { sideBarLinks } from "@/lib/data";
@@ -87,7 +88,7 @@ export function AppSidebar() {
                 return (
                   <Link
                     key={index}
-                    href={href}
+                    href={href as Route}
                     className={`flex items-center gap-2 hover:text-orange-500 transition-colors ${
                       isActive ? "text-orange-500" : ""
                     }`}

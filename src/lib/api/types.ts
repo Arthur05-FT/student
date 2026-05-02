@@ -30,11 +30,29 @@ export type SchoolDetail = {
 
 export type ClassesListItem = {
   id: string;
+  code: string | null;
+  level: string | null;
   name: string;
+  room: string | null;
+  building: string | null;
+  capacity: string | null;
+  headTeacherId: string | null;
+  headTeacher: { id: string; firstname: string; lastname: string } | null;
   schoolId: string;
   createdAt: string;
   updatedAt: string;
   _count: { students: number };
+};
+
+export type TeacherItem = {
+  id: string;
+  firstname: string;
+  lastname: string;
+  email: string | null;
+  phone: string | null;
+  schoolId: string;
+  createdAt: string;
+  updatedAt: string;
 };
 
 export type ClassesDetail = ClassesListItem & {

@@ -107,7 +107,8 @@ function ComboboxContent({
         align={align}
         alignOffset={alignOffset}
         anchor={anchor}
-        className="isolate z-50"
+        className="isolate z-50 pointer-events-auto"
+        onWheel={(e) => e.stopPropagation()}
       >
         <ComboboxPrimitive.Popup
           data-slot="combobox-content"

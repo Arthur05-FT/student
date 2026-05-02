@@ -1,19 +1,23 @@
-import { classesStatistics } from "@/lib/data";
-import { Inter } from "next/font/google";
+import type { ClassesListItem } from "@/lib/api/types";
 
-const inter = Inter({ subsets: ["latin"] });
+const ClassesStatisticsComponent = ({
+  classes,
+}: {
+  classes: ClassesListItem[];
+}) => {
+  const totalStudents = classes.reduce((acc, c) => acc + c._count.students, 0);
 
-const ClassesStatisticsComponent = () => {
+  const stats = [
+    { name: "Nombre de classes", number: classes.length },
+    { name: "Élèves inscrits", number: totalStudents },
+  ];
+
   return (
-    <div className="flex p-4 justify-between">
-      {classesStatistics?.map((item, i) => (
+    <div className="flex p-4 gap-8 border-b">
+      {stats.map((item, i) => (
         <div key={i}>
-          <h2
-            className={`text-sm text-chart-3 font-extralight ${inter.className}`}
-          >
-            {item.name}
-          </h2>
-          <p className={`text-4xl ${inter.className}`}>{item.number}</p>
+          <h2 className="text-sm text-chart-3 font-extralight">{item.name}</h2>
+          <p className="text-4xl">{item.number}</p>
         </div>
       ))}
     </div>

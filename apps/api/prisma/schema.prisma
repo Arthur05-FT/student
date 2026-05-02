@@ -43,6 +43,7 @@ model School {
 
   classes             Classes[]
   students            Student[]
+  teachers            Teacher[]
 }
 
 model User {
@@ -123,17 +124,38 @@ model Verification {
 }
 
 model Classes {
+  id            String   @id @default(uuid())
+  code          String?  @unique
+  level         String?
+  name          String
+  room          String?
+  building      String?
+  capacity      String?
+  headTeacherId String?
+  headTeacher   Teacher? @relation(fields: [headTeacherId], references: [id], onDelete: SetNull)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  schoolId      String
+  school        School   @relation(fields: [schoolId], references: [id], onDelete: Cascade)
+  students      Student[]
+
+  @@unique([schoolId, level, name])
+  @@index([schoolId])
+  @@index([headTeacherId])
+}
+
+model Teacher {
   id        String    @id @default(uuid())
-  code      String    @unique
-  name      String
-  headTeacher String  
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
+  firstname String
+  lastname  String
+  email     String?
+  phone     String?
   schoolId  String
   school    School    @relation(fields: [schoolId], references: [id], onDelete: Cascade)
-  students  Student[]
+  classes   Classes[]
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
 
-  @@unique([schoolId, name])
   @@index([schoolId])
 }
 

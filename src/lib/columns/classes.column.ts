@@ -1,37 +1,42 @@
 import { ColumnDef } from "@tanstack/react-table";
+import type { ClassesListItem } from "@/lib/api/types";
 
-type classesTypeColumns = {
-  code: string;
-  name: string;
-  sector: string;
-  capacity: number;
-  nextCourses: string;
-  headTeacher: string;
-};
-
-export const columnClasses: ColumnDef<classesTypeColumns>[] = [
+export const columnClasses: ColumnDef<ClassesListItem>[] = [
   {
     accessorKey: "code",
     header: "Code",
+    cell: ({ row }) => row.original.code ?? "—",
+  },
+  {
+    accessorKey: "level",
+    header: "Niveau",
+    cell: ({ row }) => row.original.level ?? "—",
   },
   {
     accessorKey: "name",
     header: "Classe",
   },
   {
-    accessorKey: "sector",
-    header: "Filière",
+    id: "headTeacher",
+    header: "Prof. principal",
+    accessorFn: (row) =>
+      row.headTeacher
+        ? `${row.headTeacher.firstname} ${row.headTeacher.lastname}`
+        : "—",
   },
   {
-    accessorKey: "class",
+    accessorKey: "room",
     header: "Salle",
+    cell: ({ row }) => row.original.room ?? "—",
   },
   {
     accessorKey: "capacity",
     header: "Capacité",
+    cell: ({ row }) => row.original.capacity ?? "—",
   },
   {
-    accessorKey: "nextCourses",
-    header: "Prochain cours",
+    id: "students",
+    header: "Élèves",
+    accessorFn: (row) => row._count.students,
   },
 ];

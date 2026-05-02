@@ -7,6 +7,7 @@ import {
   FieldSet,
 } from "@/components/ui/field";
 import Link from "next/link";
+import type { Route } from "next";
 import SubmitButtonComponent from "../shared/submit-button.component";
 import PolicyConfidentialityLinkComponent from "../shared/policy-confidentiality-link.component";
 
@@ -17,7 +18,7 @@ type Props = {
   isSubmitting: boolean;
   serverError?: string | null;
   onSubmit: React.FormEventHandler<HTMLFormElement>;
-  footerLink: { href: string; label: string };
+  footerLink: { href: Route; label: string };
   children: React.ReactNode;
 };
 
