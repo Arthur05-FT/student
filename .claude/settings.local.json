@@ -3,7 +3,15 @@
     "allow": [
       "Bash(npx nest *)",
       "Bash(git rm *)",
-      "Bash(npx tsc *)"
+      "Bash(npx tsc *)",
+      "WebFetch(domain:better-auth.com)",
+      "WebSearch",
+      "Bash(npx prisma *)",
+      "Bash(npm run *)",
+      "WebFetch(domain:ui.shadcn.com)",
+      "Bash(npx shadcn@latest add input-otp --cwd /home/arthur/Documents/projects/student --yes)",
+      "Bash(npx shadcn@latest add input-otp --yes)",
+      "Bash(npm install *)"
     ]
   }
 }
