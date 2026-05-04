@@ -1,15 +1,21 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import { cn } from "@/lib/utils";
 
-const inter = Inter({
+const geistSans = Geist({
+  variable: "--font-geist-sans",
   subsets: ["latin"],
-  variable: "--font-inter",
+});
+
+const geistMono = Geist_Mono({
+  variable: "--font-geist-mono",
+  subsets: ["latin"],
 });
 
 export const metadata: Metadata = {
-  title: "Skoul",
-  description: "Plateforme de gestion scolaire",
+  title: "EduCam — Gestion scolaire",
+  description: "Plateforme de gestion d'établissements scolaires camerounais",
 };
 
 export default function RootLayout({
@@ -20,7 +26,13 @@ export default function RootLayout({
   return (
     <html
       lang="fr"
-      className={`${inter.className} h-full antialiased`}
+      className={cn(
+        "h-full",
+        "antialiased",
+        geistSans.className,
+        geistMono.className,
+        "font-sans",
+      )}
       suppressHydrationWarning
     >
       <body className="min-h-full flex flex-col">{children}</body>

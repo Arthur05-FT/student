@@ -44,3 +44,5 @@ next-env.d.ts
 
 # Prisma generated client (live in apps/api after migration)
 apps/api/src/generated/
+
+/generated/prisma
