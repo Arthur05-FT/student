@@ -149,33 +149,36 @@ enum EvaluationPeriodType {
 // ============================================================
 
 model User {
-  id                String    @id @default(cuid())
-  email             String    @unique
-  emailVerified     DateTime?
-  passwordHash      String
-  firstName         String
-  lastName          String
-  phone             String?
-  avatarUrl         String?
-  role              UserRole
-  language          String    @default("fr") // "fr" | "en"
-  twoFactorEnabled  Boolean   @default(false)
-  twoFactorSecret   String?   // TOTP secret (phase 2)
-  lastLoginAt       DateTime?
-  isActive          Boolean   @default(true)
-  createdAt         DateTime  @default(now())
-  updatedAt         DateTime  @updatedAt
+  id               String    @id @default(cuid())
+  name             String
+  email            String    @unique
+  emailVerified    Boolean   @default(false)
+  image            String?
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @updatedAt
+
+  // Champs métier
+  firstName        String
+  lastName         String
+  phone            String?
+  role             UserRole  @default(DIRECTOR)
+  language         String    @default("fr")
+  schoolId         String?   // Accès rapide pour les directeurs
+  twoFactorEnabled Boolean   @default(false)
+  twoFactorSecret  String?
+  lastLoginAt      DateTime?
+  isActive         Boolean   @default(true)
 
   // Relations
-  ownedAccount      OwnerAccount?
-  directorOf        School[]          @relation("SchoolDirector")
-  staffProfile      Staff?
-  sessions          Session[]
-  passwordResets    PasswordReset[]
-  sentMessages      Message[]         @relation("MessageSender")
-  receivedMessages  MessageRecipient[]
-  notifications     Notification[]
-  auditLogs         AuditLog[]        @relation("AuditActor")
+  ownedAccount     OwnerAccount?
+  directorOf       School[]           @relation("SchoolDirector")
+  staffProfile     Staff?
+  sessions         Session[]
+  accounts         Account[]
+  sentMessages     Message[]          @relation("MessageSender")
+  receivedMessages MessageRecipient[]
+  notifications    Notification[]
+  auditLogs        AuditLog[]         @relation("AuditActor")
 
   @@index([email])
   @@index([role])
@@ -183,12 +186,13 @@ model User {
 
 model Session {
   id        String   @id @default(cuid())
-  userId    String
-  token     String   @unique
   expiresAt DateTime
+  token     String   @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
   ipAddress String?
   userAgent String?
-  createdAt DateTime @default(now())
+  userId    String
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
@@ -196,17 +200,35 @@ model Session {
   @@index([userId])
 }
 
-model PasswordReset {
-  id        String   @id @default(cuid())
-  userId    String
-  token     String   @unique
-  expiresAt DateTime
-  usedAt    DateTime?
-  createdAt DateTime @default(now())
+model Account {
+  id                   String    @id @default(cuid())
+  accountId            String
+  providerId           String
+  userId               String
+  accessToken          String?
+  refreshToken         String?
+  idToken              String?
+  accessTokenExpiresAt DateTime?
+  refreshTokenExpiresAt DateTime?
+  scope                String?
+  password             String?
+  createdAt            DateTime  @default(now())
+  updatedAt            DateTime  @updatedAt
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  @@index([token])
+  @@index([userId])
+}
+
+model Verification {
+  id         String    @id @default(cuid())
+  identifier String
+  value      String
+  expiresAt  DateTime
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+
+  @@index([identifier])
 }
 
 // ============================================================
