@@ -2,7 +2,7 @@
 
 import { APIError } from "better-auth/api";
 import { auth } from "@/lib/auth";
-import { RegisterSchema, LoginSchema, OtpSchema } from "@/lib/validations/auth";
+import { RegisterSchema, LoginSchema, OtpSchema, ForgotPasswordSchema, ResetPasswordSchema } from "@/lib/validations/auth";
 import type { ActionResult } from "@/lib/types";
 
 const ROLE_PREFIXES: Record<string, string> = {
@@ -179,4 +179,61 @@ export async function loginAction(
     console.error("[loginAction]", err);
     return { success: false, error: "Erreur serveur." };
   }
+}
+
+// ── Forgot Password ─────────────────────────────────────────────────────────
+
+export async function forgotPasswordAction(
+  _prev: unknown,
+  formData: FormData,
+): Promise<ActionResult<{ redirectTo: string }>> {
+  const parsed = ForgotPasswordSchema.safeParse({ email: formData.get("email") });
+  if (!parsed.success) {
+    return { success: false, error: "Email invalide", fieldErrors: parsed.error.flatten().fieldErrors };
+  }
+
+  try {
+    await auth.api.requestPasswordResetEmailOTP({ body: { email: parsed.data.email } });
+  } catch (err) {
+    console.error("[forgotPasswordAction]", err);
+    return { success: false, error: "Erreur serveur." };
+  }
+
+  return {
+    success: true,
+    data: { redirectTo: `/reset-password?email=${encodeURIComponent(parsed.data.email)}` },
+  };
+}
+
+// ── Reset Password ───────────────────────────────────────────────────────────
+
+export async function resetPasswordAction(
+  _prev: unknown,
+  formData: FormData,
+): Promise<ActionResult<{ redirectTo: string }>> {
+  const raw = {
+    email:           formData.get("email"),
+    otp:             formData.get("otp"),
+    password:        formData.get("password"),
+    confirmPassword: formData.get("confirmPassword"),
+  };
+
+  const parsed = ResetPasswordSchema.safeParse(raw);
+  if (!parsed.success) {
+    return { success: false, error: "Données invalides", fieldErrors: parsed.error.flatten().fieldErrors };
+  }
+
+  const { email, otp, password } = parsed.data;
+
+  try {
+    await auth.api.resetPasswordEmailOTP({ body: { email, otp, password } });
+  } catch (err) {
+    if (err instanceof APIError && err.status === "BAD_REQUEST") {
+      return { success: false, error: "Code incorrect ou expiré." };
+    }
+    console.error("[resetPasswordAction]", err);
+    return { success: false, error: "Erreur serveur." };
+  }
+
+  return { success: true, data: { redirectTo: "/login" } };
 }

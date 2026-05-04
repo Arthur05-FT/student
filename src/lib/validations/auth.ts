@@ -24,6 +24,22 @@ export const OtpSchema = z.object({
   otp:   z.string().length(6, "Le code doit contenir 6 chiffres"),
 });
 
+export const ForgotPasswordSchema = z.object({
+  email: z.email("Email invalide"),
+});
+
+export const ResetPasswordSchema = z
+  .object({
+    email:           z.email(),
+    otp:             z.string().length(6, "Le code doit contenir 6 chiffres"),
+    password:        z.string().min(8, "Minimum 8 caractères"),
+    confirmPassword: z.string(),
+  })
+  .refine((d) => d.password === d.confirmPassword, {
+    message: "Les mots de passe ne correspondent pas",
+    path: ["confirmPassword"],
+  });
+
 export type RegisterInput = z.infer<typeof RegisterSchema>;
 export type LoginInput    = z.infer<typeof LoginSchema>;
 export type OtpInput      = z.infer<typeof OtpSchema>;

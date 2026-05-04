@@ -44,9 +44,8 @@ export const auth = betterAuth({
       otpLength: 6,
       expiresIn: 300,
       sendVerificationOTP: async ({ email, otp, type }) => {
-        if (type !== "email-verification") return;
         // TODO: remplacer par Resend une fois la clé configurée
-        console.log(`[OTP] ${email} → ${otp}`);
+        console.log(`[OTP:${type}] ${email} → ${otp}`);
         /* const resend = new Resend(process.env.RESEND_API_KEY);
         await resend.emails.send({
           from: process.env.FROM_EMAIL ?? "noreply@educam.cm",
